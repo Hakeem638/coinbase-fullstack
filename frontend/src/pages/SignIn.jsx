@@ -1,16 +1,26 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (success) {
+      navigate("/");
+    }
+  }, [success, navigate]);
 
   const validate = () => {
     if (!email) return "Email is required.";
     const re = /\S+@\S+\.\S+/;
     if (!re.test(email)) return "Please enter a valid email address.";
+    if (!password) return "Password is required.";
     return null;
   };
 
@@ -25,11 +35,25 @@ const SignIn = () => {
 
     setSubmitting(true);
     try {
-      await new Promise((res) => setTimeout(res, 700));
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      localStorage.setItem("token", data.token);
       setSuccess(true);
       setError(null);
-    } catch {
-      setError("An unexpected error occurred. Please try again.");
+    } catch (err) {
+      setError(err.message);
     } finally {
       setSubmitting(false);
     }
@@ -86,11 +110,27 @@ const SignIn = () => {
               />
             </div>
 
-            {error && (
-              <div role="alert" className="text-sm text-red-600">
-                {error}
-              </div>
-            )}
+            {/* Password field */}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-gray-900 mb-2"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                placeholder="Your password"
+                disabled={submitting}
+              />
+            </div>
 
             {success && (
               <div className="text-sm text-green-600">

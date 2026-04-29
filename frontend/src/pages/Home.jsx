@@ -5,6 +5,7 @@ import GridSection from "../components/crypto/GridSection";
 import Footer from "../components/layout/Footer";
 import LearnMoreSection from "../components/crypto/LearnMoreSection";
 import HomeSignUpSection from "../components/crypto/HomeSignUpSection";
+import TaskList from "../components/TaskList";
 
 
 const Home = () => {
@@ -32,6 +33,13 @@ const Home = () => {
         </section>
         <section>
           <HomeSignUpSection />
+        </section>
+
+        {/* Task Manager Section */}
+        <section className="bg-gray-50 py-12">
+          <div className="container mx-auto px-4">
+            <TaskList />
+          </div>
         </section>
       </main>
 
