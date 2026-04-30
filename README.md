@@ -1,175 +1,66 @@
-# Task Manager REST API with Authentication
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/bMYWKvYv)
+# Interim Assessment: Full-Stack Integration – Coinbase Clone
 
-## Overview
+In this assignment, you will integrate your cloned coinbase frontend with a backend API to build a functional cryptocurrency platform with authentication and dynamic data.
 
-In this assignment, you will build a RESTful API using Node.js, Express, and MongoDB. The system must implement user authentication using JSON Web Tokens (JWT) and protected task management routes. You are required to demonstrate proper project structure, authentication, authorization, and database integration.
+You are required to implement the features using Node.js with MongoDB as the database. Create proper data models (schemas) and structure your project using best practices (models, routes, and controllers). All features must be exposed through RESTful APIs for the frontend to consume.
 
----
+## 1. Authentication System (JWT-Based)
 
-## Setup Instructions
+### Register (GET /register)
 
-Install all project dependencies:
+Create a user account using:
 
-```bash
-npm install
-```
+- Name
+- Email
+- Password
 
-Create a `.env` file in the root directory:
+Send data to the backend API and ensure it is properly stored in the database. Also handle success and error responses appropriately, returning clear and meaningful feedback based on the outcome of each request.
 
-```bash
-cp .env.example .env
-```
+### Login (GET /login)
 
-Then update the `.env` file with the following configuration:
+Authenticate users using email and password, store the returned JWT token securely (preferably using HTTP-only cookies), and redirect the user to the homepage after a successful login.
 
-```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
-```
+## 2. Protected User Profile Page
 
-Do not commit the `.env` file to version control.
+### Create a User Dashboard/Profile Page(GET /profile)
 
----
+Fetch and display:
 
-## Running the Application
+- User name
+- Email
+- Any other relevant info from backend
 
-Start the server in development mode:
+**NOTE:** This page must be protected and only accessible to authenticated users with a valid JWT token. If the user is not authenticated, they should be redirected to the login page.
 
-```bash
-npm run dev
-```
+## 3. Crypto Data Integration
 
-Start the server in production mode:
+### GET /crypto (All Tradable Cryptocurrencies)
 
-```bash
-npm start
-```
+Fetch all available cryptocurrencies from the backend and display them on the frontend.
 
-The application must start successfully and connect to MongoDB without errors.
+### GET /crypto/gainers (Top Gainers)
 
----
+Fetch cryptocurrencies with the highest percentage increase in price, sorted from highest to lowest.
 
-## Running Tests
+### GET /crypto/new (New Listings)
 
-Run the automated tests using:
+Fetch the most recently added cryptocurrencies, sorted from newest to oldest.
 
-```bash
-npm test
-```
+### POST /crypto (Add New Cryptocurrency)
 
-All tests must pass before submission.
+Create a new cryptocurrency using:
 
----
+- Name
+- Symbol
+- Price
+- Image
+- 24h Change (percentage change in price over the last 24 hours, e.g. +2.5)
 
-## Functional Requirements
-
-### Authentication Routes
-
-1. `POST /api/auth/register`
-   - Register a new user
-   - Email must be unique
-   - Password must be hashed before storing
-   - Return user information without the password
-
-2. `POST /api/auth/login`
-   - Validate user credentials
-   - Return a JWT token upon successful login
+Send data to the backend API and ensure it is properly stored in the database (MongoDB). Also handle success and error responses appropriately, returning clear and meaningful feedback based on the outcome of each request.
 
 ---
 
-### Protected Task Routes
+Push your backend code to GitHub Classroom, deploy the backend (recommended: Render), and integrate it into your Coinbase clone frontend repository. After completing the integration, deploy the updated frontend as well. Finally, submit the links to your deployed backend, deployed frontend, and your updated Coinbase clone repository via the Google Form attached.
 
-All task routes must require authentication using the following header:
-
-```
-Authorization: Bearer <token>
-```
-
-Implement the following routes:
-
-1. `POST /api/tasks`
-   - Create a new task
-   - The task must belong to the authenticated user
-
-2. `GET /api/tasks`
-   - Return only tasks that belong to the authenticated user
-
-3. `DELETE /api/tasks/:id`
-   - Only the owner of the task can delete it
-   - Return appropriate error responses for unauthorized access
-
----
-
-## Technical Requirements
-
-- Use ES Modules (import/export)
-- Use Mongoose for database modeling
-- Implement authentication middleware
-- Use proper HTTP status codes
-- Follow a clean project structure
-- Do not store passwords in plain text
-- Make meaningful Git commits
-- Ensure no sensitive files are committed
-
----
-
-## Project Structure
-
-```
-├── src/
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   └── taskController.js
-│   ├── middleware/
-│   │   └── authMiddleware.js
-│   ├── models/
-│   │   ├── User.js
-│   │   └── Task.js
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   └── taskRoutes.js
-│   └── app.js
-├── tests/
-├── .env.example
-├── .gitignore
-├── package.json
-└── README.md
-```
-
----
-
-## Environment Variables
-
-| Variable     | Description                        |
-|--------------|------------------------------------|
-| `PORT`       | Port the server runs on            |
-| `MONGO_URI`  | MongoDB connection string          |
-| `JWT_SECRET` | Secret key used to sign JWT tokens |
-
----
-
-## API Reference
-
-### Auth Endpoints
-
-| Method | Endpoint               | Description         | Auth Required |
-|--------|------------------------|---------------------|---------------|
-| POST   | `/api/auth/register`   | Register a new user | No            |
-| POST   | `/api/auth/login`      | Login and get token | No            |
-
-### Task Endpoints
-
-| Method | Endpoint           | Description                  | Auth Required |
-|--------|--------------------|------------------------------|---------------|
-| POST   | `/api/tasks`       | Create a new task            | Yes           |
-| GET    | `/api/tasks`       | Get all tasks for the user   | Yes           |
-| DELETE | `/api/tasks/:id`   | Delete a task by ID          | Yes           |
-
----
-
-## Submission
-
-Push your final solution to the GitHub Classroom repository. The project will be automatically evaluated using tests. Ensure all tests pass successfully before submitting.
-
-Good luck.
+**NOTE:** Ensure that all submitted links are accurate and working, as no marks will be awarded for invalid or inaccessible submissions.

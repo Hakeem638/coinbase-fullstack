@@ -1,9 +1,4 @@
 import { useEffect, useState } from "react";
-import {
-  mockCryptos,
-  mockTopGainers,
-  mockNewOnCoinbase,
-} from "../data/mock/cryptos";
 
 export function useCryptos(type) {
   const [cryptos, setCryptos] = useState([]);
@@ -11,27 +6,33 @@ export function useCryptos(type) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Simulate a small loading delay for better UX
-    setLoading(true);
-    const timer = setTimeout(() => {
+    const fetchCryptos = async () => {
+      setLoading(true);
       try {
+        let endpoint = "http://localhost:5000/api/crypto";
         if (type === "gainers") {
-          setCryptos(mockTopGainers);
+          endpoint += "/gainers";
         } else if (type === "new") {
-          setCryptos(mockNewOnCoinbase);
-        } else {
-          setCryptos(mockCryptos);
+          endpoint += "/new";
         }
+
+        const response = await fetch(endpoint);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setCryptos(data);
         setError(null);
       } catch (err) {
-        setError("Failed to load data");
+        setError(err.message);
         setCryptos([]);
       } finally {
         setLoading(false);
       }
-    }, 300);
+    };
 
-    return () => clearTimeout(timer);
+    fetchCryptos();
   }, [type]);
 
   return { cryptos, loading, error };

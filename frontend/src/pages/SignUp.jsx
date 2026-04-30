@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -44,6 +45,7 @@ export default function SignUp() {
   };
 
   const validate = () => {
+    if (!name) return "Name is required.";
     if (!email) return "Email is required.";
     const re = /\S+@\S+\.\S+/;
     if (!re.test(email)) return "Please enter a valid email address.";
@@ -69,7 +71,7 @@ export default function SignUp() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       const data = await response.json();
@@ -112,6 +114,24 @@ export default function SignUp() {
 
         {!showVerification ? (
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Full name
+              </label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none"
+                placeholder="John Doe"
+                required
+                disabled={submitting}
+              />
+            </div>
             <div>
               <label
                 htmlFor="email"
