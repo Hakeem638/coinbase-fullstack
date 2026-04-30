@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getApiUrl } from "../utils/api";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -16,7 +17,7 @@ const Profile = () => {
       }
 
       try {
-        const response = await fetch("http://localhost:5000/api/auth/profile", {
+        const response = await fetch(`${getApiUrl()}/api/auth/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getApiUrl } from "../utils/api";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -10,7 +11,7 @@ const TaskList = () => {
     if (!token) return;
 
     try {
-      const response = await fetch("http://localhost:5000/api/tasks", {
+      const response = await fetch(`${getApiUrl()}/api/tasks`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.ok) {
@@ -33,7 +34,7 @@ const TaskList = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/tasks", {
+      const response = await fetch(`${getApiUrl()}/api/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +56,7 @@ const TaskList = () => {
   const deleteTask = async (id) => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+      const response = await fetch(`${getApiUrl()}/api/tasks/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

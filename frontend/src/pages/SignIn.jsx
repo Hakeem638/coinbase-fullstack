@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getApiUrl } from "../utils/api";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -35,7 +36,7 @@ const SignIn = () => {
 
     setSubmitting(true);
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch(`${getApiUrl()}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

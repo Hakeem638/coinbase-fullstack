@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getApiUrl } from "../utils/api";
 
 export function useCryptos(type) {
   const [cryptos, setCryptos] = useState([]);
@@ -9,7 +10,7 @@ export function useCryptos(type) {
     const fetchCryptos = async () => {
       setLoading(true);
       try {
-        let endpoint = "http://localhost:5000/api/crypto";
+        let endpoint = `${getApiUrl()}/api/crypto`;
         if (type === "gainers") {
           endpoint += "/gainers";
         } else if (type === "new") {

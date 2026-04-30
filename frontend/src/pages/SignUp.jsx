@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getApiUrl } from "../utils/api";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -21,7 +22,7 @@ export default function SignUp() {
 
     setSubmitting(true);
     try {
-      const response = await fetch("http://localhost:5000/api/auth/verify", {
+      const response = await fetch(`${getApiUrl()}/api/auth/verify`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +67,7 @@ export default function SignUp() {
 
     setSubmitting(true);
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch(`${getApiUrl()}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
