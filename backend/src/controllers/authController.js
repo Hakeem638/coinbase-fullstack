@@ -13,9 +13,9 @@ const generateToken = (userId) => {
 
 export const registerUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email and password are required" });
     }
 
     const existingUser = await User.findOne({ email: email.toLowerCase() });
@@ -31,6 +31,7 @@ export const registerUser = async (req, res) => {
     const codeExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
     const user = await User.create({
+      name: name.trim(),
       email: email.toLowerCase(),
       password: hashedPassword,
       verificationCode,
@@ -101,9 +102,22 @@ export const loginUser = async (req, res) => {
     }
 
     const token = generateToken(user._id);
-    return res.status(200).json({ token, user: { id: user._id, email: user.email } });
+    return res.status(200).json({ token, user: { id: user._id, name: user.name, email: user.email } });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Login failed" });
+  }
+};
+
+export const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Could not fetch profile" });
   }
 };
