@@ -260,6 +260,7 @@ export default function SignUp() {
               Sign in
             </Link>
           </p>
+          <p><Disclaimer>This is a clone of the Coinbase website for educational purposes only, do not use real financial information.</Disclaimer></p>
         </div>
       </div>
     </div>

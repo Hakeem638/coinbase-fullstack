@@ -808,7 +808,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs sm:text-sm text-gray-600">
           <div className="flex items-center gap-2 flex-wrap">
-            <span>&copy; 2026 Coinbase</span>
+            <span>&copy; 2026 Coinbase-clone</span>
             <span className="text-gray-400">&bull;</span>
             <Link to="/" className="hover:text-blue-600 underline">
               Privacy
@@ -817,6 +817,7 @@ export default function Footer() {
             <Link to="/" className="hover:text-blue-600 underline">
               Terms & Conditions
             </Link>
+            <p><Disclaimer>This is a clone of the Coinbase website for educational purposes only.</Disclaimer></p>
           </div>
 
           <div className="flex items-center gap-2">
